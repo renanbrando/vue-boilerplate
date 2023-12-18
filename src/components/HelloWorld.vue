@@ -1,24 +1,24 @@
 <template>
   <v-container>
-      <v-row class="d-flex justify-center">
-        <v-col cols="auto">
-          <v-card flat title="Usuários">
-            <template v-slot:text>
-              <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" single-line
-                variant="outlined" hide-details></v-text-field>
-            </template>
+    <v-row class="d-flex justify-center">
+      <v-col cols="auto">
+        <v-card flat title="Usuários">
+          <template v-slot:text>
+            <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" single-line variant="outlined"
+              hide-details></v-text-field>
+          </template>
 
-            <v-data-table :headers="headers" :items="users" :search="search"></v-data-table>
-          </v-card>
-        </v-col>
-      </v-row>
+          <v-data-table :headers="(headers as any)" :items="users" :search="search"></v-data-table>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts" setup>
 
 import { ref, onBeforeMount } from 'vue'
-import api from '@/api'
+import api from '@/api/index'
 
 
 const search = ref('')
@@ -28,11 +28,12 @@ const headers = [
     key: 'name',
     sortable: false,
     title: 'Nome',
+    value: 'Nome'
   },
-  { key: 'email', title: 'E-mail' },
-  { key: 'companyId', title: 'Empresa' },
-  { key: 'lastLogin', title: 'Último Login' },
-  { key: 'status', title: 'Status' },
+  { key: 'email', title: 'E-mail', value: 'E-mail', sortable: false, align: 'start' },
+  { key: 'companyId', title: 'Empresa', value: 'Empresa', sortable: false, align: 'start' },
+  { key: 'lastLogin', title: 'Último Login', value: 'Último Login', sortable: false, align: 'start' },
+  { key: 'status', title: 'Status', value: 'Status', sortable: false, align: 'start' },
 ]
 
 const users = ref([
@@ -66,7 +67,7 @@ const users = ref([
   },
 ])
 
-onBeforeMount(async() => {
+onBeforeMount(async () => {
   const response = await api.get('/users')
   console.log(response)
   users.value.push(...response.data)
