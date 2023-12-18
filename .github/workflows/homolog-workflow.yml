@@ -1,0 +1,65 @@
+name: Homologation Workflow
+
+on:
+  workflow_dispatch:
+
+env:
+  VITE_AWS_POOL_ID: ${{ secrets.VITE_AWS_POOL_ID }}
+  VITE_AWS_CLIENT_APP_ID: ${{ secrets.VITE_AWS_CLIENT_APP_ID }}
+  VITE_API: ${{ secrets.VITE_API }}
+  VITE_NODE_ENV: ${{ vars.VITE_NODE_ENV }}
+  AWS_S3_BUCKET: ${{ vars.AWS_BUCKET }}
+  AWS_DISTRIBUTION: ${{ vars.AWS_DISTRIBUTION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment: homolog
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'yarn'
+    - name: Install
+      run: yarn install
+    - name: Linter
+      run: yarn run lint
+    - name: Build
+      run: yarn run build
+    - uses: actions/upload-artifact@master
+      with:
+        name: dist-artifact
+        path: dist/
+
+  deploy:
+    name: Deploy to S3
+    needs: build
+    runs-on: ubuntu-latest
+    environment: homolog
+    steps:
+      - name: Get dist folder
+        uses: actions/download-artifact@master
+        with:
+          name: dist-artifact
+          path: dist/
+      - name: Deploy
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --delete
+        env:
+          SOURCE_DIR: "dist"
+
+  invalidate:
+    name: Invalidate CloudFront
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    environment: homolog
+    steps:
+      - name: Invalidate
+        run: aws cloudfront create-invalidation --distribution-id ${{ vars.AWS_DISTRIBUTION }} --paths "/*"

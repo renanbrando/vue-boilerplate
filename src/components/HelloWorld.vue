@@ -1,75 +1,75 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="align-center text-center fill-height">
-      <v-img height="300" src="@/assets/logo.svg" />
-
-      <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
-
-      <h1 class="text-h2 font-weight-bold">Vuetify</h1>
-
-      <div class="py-14" />
-
-      <v-row class="d-flex align-center justify-center">
+  <v-container>
+      <v-row class="d-flex justify-center">
         <v-col cols="auto">
-          <v-btn
-            href="https://vuetifyjs.com/components/all/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-view-dashboard"
-              size="large"
-              start
-            />
+          <v-card flat title="Usuários">
+            <template v-slot:text>
+              <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" single-line
+                variant="outlined" hide-details></v-text-field>
+            </template>
 
-            Components
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            color="primary"
-            href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
-            min-width="228"
-            rel="noopener noreferrer"
-            size="x-large"
-            target="_blank"
-            variant="flat"
-          >
-            <v-icon
-              icon="mdi-speedometer"
-              size="large"
-              start
-            />
-
-            Get Started
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            href="https://community.vuetifyjs.com/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-account-group"
-              size="large"
-              start
-            />
-
-            Community
-          </v-btn>
+            <v-data-table :headers="headers" :items="users" :search="search"></v-data-table>
+          </v-card>
         </v-col>
       </v-row>
-    </v-responsive>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-  //
+
+import { ref, onBeforeMount } from 'vue'
+import api from '@/api'
+
+
+const search = ref('')
+const headers = [
+  {
+    align: 'start',
+    key: 'name',
+    sortable: false,
+    title: 'Nome',
+  },
+  { key: 'email', title: 'E-mail' },
+  { key: 'companyId', title: 'Empresa' },
+  { key: 'lastLogin', title: 'Último Login' },
+  { key: 'status', title: 'Status' },
+]
+
+const users = ref([
+  {
+    name: 'Renan Ribeiro Brando',
+    email: 'renan@quill.com.br',
+    companyId: 1,
+    status: true,
+    lastLogin: new Date().toISOString(),
+  },
+  {
+    name: 'Arthur Marçal',
+    email: 'arthur@quill.com.br',
+    companyId: 1,
+    status: true,
+    lastLogin: new Date().toISOString(),
+  },
+  {
+    name: 'Clarissa Vieira',
+    email: 'clarissa@quill.com.br',
+    companyId: 1,
+    status: true,
+    lastLogin: new Date().toISOString(),
+  },
+  {
+    name: 'Kaio Takase',
+    email: 'kaio@quill.com.br',
+    companyId: 1,
+    status: true,
+    lastLogin: new Date().toISOString(),
+  },
+])
+
+onBeforeMount(async() => {
+  const response = await api.get('/users')
+  console.log(response)
+  users.value.push(...response.data)
+})
+
 </script>

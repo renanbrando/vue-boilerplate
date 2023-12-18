@@ -3,9 +3,11 @@
     <v-app-bar-title>
       <v-icon icon="mdi-circle-slice-6" />
 
-      Essentials Preset
+      Quill Backoffice
     </v-app-bar-title>
+
   </v-app-bar>
+
 </template>
 
 <script lang="ts" setup>
