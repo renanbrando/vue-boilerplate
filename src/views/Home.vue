@@ -1,7 +1,43 @@
 <template>
-  <HelloWorld />
+  <v-container fluid style="margin: 0; padding: 0; padding-bottom: 100px">
+    <calendar />
+    <div v-if="!listComposable.bookings.length && !listComposable.isLoading">
+      <v-alert type="info" elevation="1" class="ma-4">
+        {{
+          listComposable.list === 'bookings'
+            ? 'Nenhuma reserva encontrada.'
+            : listComposable.list === 'guests'
+              ? 'Nenhum hóspede encontrado.'
+              : 'Nenhum veículo encontrado.'
+        }}
+      </v-alert>
+    </div>
+    <div v-if="!listComposable.isLoading">
+      <bookings-list
+        v-if="listComposable.list === 'bookings'"
+        :bookings="listComposable.bookings"
+      />
+      <guests-list v-if="listComposable.list === 'guests'" :bookings="listComposable.bookings" />
+      <vehicles-list
+        v-if="listComposable.list === 'vehicles'"
+        :bookings="listComposable.bookings"
+      />
+    </div>
+    <v-skeleton-loader v-for="n in 12" v-else :key="n" :elevation="1" type="card" class="ma-4" />
+  </v-container>
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+import Calendar from '@/components/home/Calendar.vue'
+import BookingsList from '@/components/home/lists/BookingsList.vue'
+import GuestsList from '@/components/home/lists/GuestsList.vue'
+import VehiclesList from '@/components/home/lists/VehiclesList.vue'
+import { useList } from '@/composables'
+import { onBeforeMount } from 'vue'
+
+const listComposable = useList()
+
+onBeforeMount(async () => {
+  await listComposable.getBookings()
+})
 </script>
