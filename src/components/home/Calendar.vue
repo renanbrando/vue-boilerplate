@@ -12,7 +12,6 @@
       <v-col cols="2" align="right">
         <v-chip variant="outlined" class="pointer" @click="toggleCalendarType">
           {{ calendarViews[selectedCalendarType].name }}
-          {{ selectedCalendarType }}
         </v-chip>
         <v-btn variant="text" color="white" class="mt-n1" @click="goToNextMonth(1)">
           <v-icon color="white" size="35">mdi-chevron-right</v-icon>
