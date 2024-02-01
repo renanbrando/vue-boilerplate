@@ -152,8 +152,9 @@
 
         <v-row
           v-if="
-            selectedBooking.precheckin.guests.length > 0 &&
-            selectedBooking.precheckin.guests[0].name.length
+            selectedBooking.custom9.length > 0 &&
+            selectedBooking.precheckin?.guests?.length &&
+            selectedBooking.precheckin?.guests[0]?.name.length
           "
           no-gutters
           class="mt-2"
@@ -163,10 +164,11 @@
           </v-col>
         </v-row>
         <v-row
-          v-for="guest in selectedBooking.precheckin.guests"
+          v-for="guest in selectedBooking?.precheckin?.guests"
           v-if="
-            selectedBooking.precheckin.guests.length > 0 &&
-            selectedBooking.precheckin.guests[0].name.length
+            selectedBooking.custom9.length > 0 &&
+            selectedBooking.precheckin?.guests?.length &&
+            selectedBooking.precheckin?.guests[0]?.name.length
           "
           :key="guest.id"
           no-gutte
@@ -456,7 +458,7 @@
         icon="mdi-cellphone-key"
         size="x-large"
         color="blue"
-        :disabled="isLoading"
+        :disabled="isLoading || !selectedBooking.custom9.length"
         :loading="isLoading"
         @click="sendMessage"
       />
@@ -470,7 +472,7 @@
           color="green"
           rounded="xl"
           class="mb-3 text-unset"
-          :disabled="isFinishing"
+          :disabled="isFinishing || !selectedBooking.custom9.length"
           :loading="isFinishing"
           @click="finishCheckin"
         >
@@ -504,7 +506,11 @@ const checkin = ref(selectedBooking.formattedArrival || '')
 const checkout = ref(selectedBooking.formattedDeparture || '')
 const phone = ref(selectedBooking.precheckin?.phone || '')
 const document = ref(selectedBooking.precheckin?.doc || '')
-const birthdate = ref(format(new Date(selectedBooking.precheckin?.birthday), 'dd/MM/yyyy') || '')
+const birthdate = ref(
+  selectedBooking.precheckin?.birthday
+    ? format(new Date(selectedBooking.precheckin?.birthday), 'dd/MM/yyyy')
+    : '' || ''
+)
 
 const copy = (text: string, message: string) => {
   writeClipboardText(text).then(() => {
@@ -515,7 +521,7 @@ const copy = (text: string, message: string) => {
   })
 }
 
-const visitors = ref(selectedBooking.precheckin?.visitors)
+const visitors = ref(selectedBooking.precheckin?.visitors || [])
 
 const sendMessage = async () => {
   isLoading.value = true

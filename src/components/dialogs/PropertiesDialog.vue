@@ -23,16 +23,17 @@
             </v-tooltip>
           </v-toolbar-items>
         </v-toolbar>
-        <div class="px-4">
+        <div class="px-4 mt-2">
           <v-checkbox
             v-for="property in properties"
             :key="property.id"
             v-model="selected"
+            hide-details
             :label="property.name"
             :value="property.id"
-          ></v-checkbox>
+          />
         </div>
-        <v-row>
+        <v-row no-gutters class="mt-4">
           <v-col cols="12" class="px-8">
             <v-btn
               color="green"

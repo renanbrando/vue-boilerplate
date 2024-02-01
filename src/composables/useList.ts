@@ -1,10 +1,13 @@
-import type { Booking, Bookings } from '@/types/Booking'
+import type { Booking, Bookings, Property } from '@/types/Booking'
 import type { List, Tab, Status } from '@/types/List'
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
 import api from '@/api'
 
 const today = format(new Date(), 'yyyy-MM-dd')
+const prppertyIds = JSON.parse(localStorage.getItem('user-concierge') || '{}').properties.map(
+  (prop: Property) => prop.id
+)
 
 export const useList = defineStore('list', {
   state: () => ({
@@ -14,7 +17,7 @@ export const useList = defineStore('list', {
     status: 'checkin' as Status,
     selectedDate: today,
     initialProperties: JSON.parse(localStorage.getItem('user-concierge') || '{}').propertiesIds,
-    propertiesIds: JSON.parse(localStorage.getItem('user-concierge') || '{}').propertiesIds,
+    propertiesIds: prppertyIds,
     bookings: [] as Bookings,
     isLoading: true,
   }),

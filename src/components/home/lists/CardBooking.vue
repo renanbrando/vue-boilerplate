@@ -54,18 +54,29 @@
           @click="goToBookingDetails"
           >Mais Informações</v-btn
         >
-        <v-btn color="primary" class="mx-1 text-unset" rounded="xl" elevation="0"
-          >Realizar Check-in</v-btn
+        <v-btn
+          color="primary"
+          class="mx-1 text-unset"
+          rounded="xl"
+          elevation="0"
+          :loading="isFinishing"
+          :disabled="isFinishing || !booking?.custom9.length"
+          @click="finishCheckin(Number(booking?.id))"
+          >Finalizar Check-in</v-btn
         >
       </v-col>
     </v-row>
+    <toast ref="toastRef" />
   </v-card>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+import api from '@/api'
 import { useRouter } from 'vue-router'
 import type { Booking } from '@/types/Booking'
 import { useList } from '@/composables/useList'
+import Toast from '@/components/Toast.vue'
 
 const route = useRouter()
 const props = defineProps<{
@@ -73,6 +84,8 @@ const props = defineProps<{
 }>()
 
 const { setSelectedBooking, setTab } = useList()
+const isFinishing = ref(false)
+const toastRef = ref()
 
 const goToBookingDetails = () => {
   setSelectedBooking(props.booking as Booking)
@@ -80,6 +93,27 @@ const goToBookingDetails = () => {
   route.push({
     name: 'Booking',
   })
+}
+
+const finishCheckin = (bookId: number) => {
+  isFinishing.value = true
+  api
+    .post(`/check-in-api/precheckin/finish/${bookId}`)
+    .then(() => {
+      toastRef.value?.show('Check-in finalizado com sucesso', {
+        timeout: 2000,
+        color: 'green',
+      })
+    })
+    .catch(() => {
+      toastRef.value?.show('Erro ao finalizar Check-in', {
+        timeout: 2000,
+        color: 'error',
+      })
+    })
+    .finally(() => {
+      isFinishing.value = false
+    })
 }
 </script>
 <style lang="scss" scoped>

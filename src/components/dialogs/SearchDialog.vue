@@ -19,13 +19,11 @@
         </v-text-field>
       </v-card-title>
       <v-card-text>
-        <v-list-item-group>
-          <v-row no-gutters class="mt-6 mx-6">
-            <v-col v-for="book in filteredBookings" :key="book.id" cols="12">
-              <CardBooking :booking="book" />
-            </v-col>
-          </v-row>
-        </v-list-item-group>
+        <v-row no-gutters class="mt-6 mx-6">
+          <v-col v-for="book in filteredBookings" :key="book.id" cols="12">
+            <CardBooking :booking="book" />
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-dialog>

@@ -9,6 +9,11 @@ export type Guest = {
   phone: string
 }
 
+export type Property = {
+  name: string
+  id: number
+}
+
 export type Guests = Guest[]
 
 export type Booking = {
@@ -16,9 +21,7 @@ export type Booking = {
   flagColor: string
   room: {
     displayName: string
-    property: {
-      name: string
-    }
+    property: Property
   }
   precheckin: {
     name: string

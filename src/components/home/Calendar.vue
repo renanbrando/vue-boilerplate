@@ -32,10 +32,10 @@
       <tr v-for="week in weeks" :key="week[0]">
         <td
           v-for="day in week"
-          :key="day"
+          :key="`${day}-${currentMonth}`"
           :style="
             Number(listComposable.selectedDate.split('-')[2]) === day &&
-            new Date(listComposable.selectedDate).getMonth() === months[currentMonth]
+            Number(listComposable.selectedDate.split('-')[1]) - 1 === months[currentMonth]
               ? 'background-color: #c31c4a'
               : 'background-color: #000'
           "

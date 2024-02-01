@@ -19,16 +19,16 @@ import { useList } from '@/composables'
 
 const listComposable = useList()
 
-const shareContent = `Reserva: ${listComposable.selectedBooking.id}
-Quarto: ${listComposable.selectedBooking.room.displayName}
-Nome: ${listComposable.selectedBooking.precheckin.name || ''}
-Email: ${listComposable.selectedBooking.precheckin.email || ''}
-Entrada: ${listComposable.selectedBooking.formattedArrival || ''}
-Saída: ${listComposable.selectedBooking.formattedDeparture || ''}
-Telefone: ${listComposable.selectedBooking.precheckin.phone || ''}
-Documento: ${listComposable.selectedBooking.precheckin.doc || ''}
-Date de nascimento: ${listComposable.selectedBooking.precheckin.birthday || ''}
-Acompanhante Nome: ${listComposable.selectedBooking.precheckin.guests[0].name || ''}
-Acompanhante Doc: ${listComposable.selectedBooking.precheckin.guests[0].doc || ''}
+const shareContent = `Reserva: ${listComposable.selectedBooking?.id}
+Quarto: ${listComposable.selectedBooking?.room.displayName}
+Nome: ${listComposable.selectedBooking?.precheckin?.name || ''}
+Email: ${listComposable.selectedBooking?.precheckin?.email || ''}
+Entrada: ${listComposable.selectedBooking?.formattedArrival || ''}
+Saída: ${listComposable.selectedBooking?.formattedDeparture || ''}
+Telefone: ${listComposable.selectedBooking?.precheckin?.phone || ''}
+Documento: ${listComposable.selectedBooking?.precheckin?.doc || ''}
+Date de nascimento: ${listComposable.selectedBooking?.precheckin?.birthday || ''}
+Acompanhante Nome: ${listComposable.selectedBooking?.custom9.length > 0 && listComposable.selectedBooking?.precheckin?.guests?.length ? listComposable.selectedBooking?.precheckin?.guests[0]?.name : '' || '-'}
+Acompanhante Doc: ${listComposable.selectedBooking?.custom9.length > 0 && listComposable.selectedBooking?.precheckin?.guests?.length ? listComposable.selectedBooking?.precheckin?.guests[0]?.doc : '' || '-'}
 `
 </script>
