@@ -39,7 +39,7 @@
               ? 'background-color: #c31c4a'
               : 'background-color: #000'
           "
-          @click="setDate(day as number)"
+          @click="day ? setDate(day as number) : () => {}"
         >
           {{ day }}
         </td>
