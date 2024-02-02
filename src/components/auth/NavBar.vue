@@ -41,7 +41,6 @@
     />
 
     <v-btn v-if="!hasDeleteButton" variant="text" icon="mdi-target" @click="openPropertiesDialog" />
-    <v-btn v-else variant="text" icon="mdi-delete" />
   </v-app-bar>
 
   <v-navigation-drawer v-model="drawer" :width="350" temporary>
@@ -49,8 +48,8 @@
       style="background-color: black; color: white; height: 100px"
       class="px-6 py-5 pointer"
       prepend-avatar="../../assets/logo.png"
-      title="360 Portaria"
-      subtitle="admin@s360.com"
+      :title="user.name"
+      :subtitle="user.email"
     >
     </v-list-item>
 
@@ -104,6 +103,7 @@ defineProps<{
 const propertiesDialogRef = ref()
 const searchDialogRef = ref()
 const toastRef = ref()
+const user = ref(JSON.parse(localStorage.getItem('user-concierge') as string))
 
 const signOut = () => {
   localStorage.removeItem('token-concierge')

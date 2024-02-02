@@ -14,8 +14,8 @@
                 <span
                   class="text-h6 pointer"
                   v-bind="props"
-                  @click="copy('TU43434', 'Quarto copiado')"
-                  >Quarto: TU43434</span
+                  @click="copy(selectedBooking.room.displayName, 'Quarto copiado')"
+                  >Quarto: {{ selectedBooking.room.displayName }}</span
                 >
               </template>
             </v-tooltip>

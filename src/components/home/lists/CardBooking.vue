@@ -15,7 +15,10 @@
     </v-row>
     <v-row no-gutters class="mt-2">
       <v-col cols="12">
-        <span class="text-subtitle-1">{{ booking?.precheckin?.name || '' }}</span>
+        <span class="text-subtitle-1"
+          >{{ booking?.precheckin?.name || '' }} {{ booking?.firstName || '' }}
+          {{ booking?.lastName || '' }}</span
+        >
       </v-col>
     </v-row>
     <v-row no-gutters class="mt-2">
@@ -32,14 +35,16 @@
     <v-row no-gutters class="mt-2">
       <v-col cols="12">
         <span class="font-weight-bold">Check-in: </span
-        ><span>{{ booking?.formattedArrival || '' }}</span>
+        ><span>{{ booking?.formattedArrival || '' }} {{ booking?.formatedArrivalTime || '' }}</span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span class="font-weight-bold">Check-out: </span>
-        <span>{{ booking?.formattedDeparture || '' }}</span>
+        <span
+          >{{ booking?.formattedDeparture || '' }} {{ booking?.formatedDepartureTime || '' }}</span
+        >
       </v-col>
     </v-row>
     <v-row no-gutters class="mt-2">
-      <v-col cols="12"> <span class="font-weight-bold">Acompanhante & Hóspedes:</span></v-col>
+      <v-col cols="12"> <span class="font-weight-bold">Acompanhantes:</span></v-col>
       <v-col v-for="guest in booking?.precheckin?.guests" :key="guest.id" cols="12">
         <span>{{ guest.name }}</span></v-col
       >
@@ -51,6 +56,7 @@
           class="mx-1 text-unset"
           variant="outlined"
           rounded="xl"
+          :disabled="!booking?.custom9.length"
           @click="goToBookingDetails"
           >Mais Informações</v-btn
         >
@@ -88,6 +94,7 @@ const isFinishing = ref(false)
 const toastRef = ref()
 
 const goToBookingDetails = () => {
+  if (!props.booking?.custom9.length) return
   setSelectedBooking(props.booking as Booking)
   setTab('reservation')
   route.push({

@@ -37,6 +37,10 @@ export type Booking = {
   custom2: string
   formattedArrival: string
   formattedDeparture: string
+  formatedArrivalTime: string
+  formatedDepartureTime: string
+  firstName: string
+  lastName: string
 }
 
 export type Bookings = Booking[]

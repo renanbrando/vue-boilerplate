@@ -36,7 +36,7 @@
 
     <v-btn width="350px" @click="toggleList('guests')">
       <v-icon>mdi-account-multiple</v-icon>
-      Hóspedes
+      Pessoas
     </v-btn>
 
     <v-btn width="350px" @click="toggleList('vehicles')">

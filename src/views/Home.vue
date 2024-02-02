@@ -7,7 +7,7 @@
           listComposable.list === 'bookings'
             ? 'Nenhuma reserva encontrada.'
             : listComposable.list === 'guests'
-              ? 'Nenhum hóspede encontrado.'
+              ? 'Nenhuma pessoa encontrada.'
               : 'Nenhum veículo encontrado.'
         }}
       </v-alert>
