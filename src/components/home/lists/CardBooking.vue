@@ -36,7 +36,7 @@
       <v-col cols="12">
         <span class="font-weight-bold">Check-in: </span
         ><span>{{ booking?.formattedArrival || '' }} {{ booking?.formatedArrivalTime || '' }}</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;
+        <br />
         <span class="font-weight-bold">Check-out: </span>
         <span
           >{{ booking?.formattedDeparture || '' }} {{ booking?.formatedDepartureTime || '' }}</span
@@ -53,7 +53,7 @@
       <v-col cols="12" align="center">
         <v-btn
           color="primary"
-          class="mx-1 text-unset"
+          class="mx-1 text-unset my-1"
           variant="outlined"
           rounded="xl"
           :disabled="!booking?.custom9.length"
@@ -62,7 +62,7 @@
         >
         <v-btn
           color="primary"
-          class="mx-1 text-unset"
+          class="mx-1 text-unset my-1"
           rounded="xl"
           elevation="0"
           :loading="isFinishing"

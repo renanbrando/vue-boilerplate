@@ -453,7 +453,7 @@
     </v-window>
     <toast ref="toastRef" />
     <edit-guest-dialog ref="editGuest" />
-    <div class="fab-wrapper">
+    <div :class="$vuetify.display.lgAndUp ? 'fab-wrapper-desktop' : 'fab-wrapper-mobile'">
       <v-btn
         icon="mdi-cellphone-key"
         size="x-large"
@@ -463,8 +463,12 @@
         @click="sendMessage"
       />
     </div>
-    <div class="button-bottom-wrapper">
-      <v-divider class="mb-6" />
+    <div
+      :class="
+        $vuetify.display.lgAndUp ? 'button-bottom-wrapper-desktop' : 'button-bottom-wrapper-mobile'
+      "
+    >
+      <v-divider class="mb-6 mt-8" />
       <div style="padding-left: 50px; padding-right: 50px">
         <v-btn
           block
@@ -492,6 +496,8 @@ import { useList } from '@/composables'
 import { format } from 'date-fns'
 import { formatVehicle } from '@/helpers'
 import api from '@/api'
+
+window.scrollTo({ top: 0, behavior: 'smooth' })
 
 const { selectedBooking, tab: stateTab } = useList()
 const editGuest = ref()
@@ -575,15 +581,27 @@ const finishCheckin = () => {
   cursor: pointer;
 }
 
-.fab-wrapper {
+.fab-wrapper-desktop {
   position: fixed;
   bottom: 10rem;
   right: 3rem;
   z-index: 9999;
 }
 
-.button-bottom-wrapper {
+.fab-wrapper-mobile {
   position: fixed;
+  bottom: 4rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+.button-bottom-wrapper-desktop {
+  position: fixed;
+  bottom: 0rem;
+  width: 100%;
+}
+
+.button-bottom-wrapper-mobile {
   bottom: 0rem;
   width: 100%;
 }

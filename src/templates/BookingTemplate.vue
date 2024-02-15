@@ -8,7 +8,7 @@
       :share-content="shareContent"
     />
 
-    <v-main style="height: 100vh; background-color: #f4f4f4; width: 100%">
+    <v-main style="height: 100%; background-color: #f4f4f4; width: 100%">
       <router-view />
     </v-main>
   </v-layout>

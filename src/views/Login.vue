@@ -44,7 +44,10 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
 import Toast from '@/components/Toast.vue'
+import { useList } from '@/composables'
+import type { Property } from '@/types/Booking'
 
+const listComposable = useList()
 const route = useRouter()
 const email = ref('')
 const password = ref('')
@@ -63,6 +66,8 @@ const login = async () => {
     .then(({ data }) => {
       localStorage.setItem('token-concierge', data.AccessToken)
       localStorage.setItem('user-concierge', JSON.stringify(data))
+      const properties = data.properties.map((prop: Property) => prop.id)
+      listComposable.setPropertiesIds(properties)
       route.replace('/home')
     })
     .catch(() => {

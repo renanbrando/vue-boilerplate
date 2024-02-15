@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="container">
-    <v-row no-gutters class="my-4">
+    <v-row v-if="$vuetify.display.lgAndUp" no-gutters class="my-4">
       <v-col cols="2">
         <v-btn variant="text" color="white" class="mt-n1" @click="goToPreviousMonth(-1)">
           <v-icon color="white" size="35">mdi-chevron-left</v-icon>
@@ -18,6 +18,26 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-row v-else no-gutters>
+      <v-col cols="12" align="right" class="mb-8">
+        <v-chip variant="outlined" class="pointer" @click="toggleCalendarType">
+          {{ calendarViews[selectedCalendarType].name }}
+        </v-chip>
+      </v-col>
+      <v-col cols="2">
+        <v-btn variant="text" color="white" class="mt-n2" @click="goToPreviousMonth(-1)">
+          <v-icon color="white" size="30">mdi-chevron-left</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="8" align="center">
+        <span class="text-body-1">{{ currentMonth }} de {{ currentYear }}</span>
+      </v-col>
+      <v-col cols="2" align="right">
+        <v-btn variant="text" color="white" class="mt-n2" @click="goToNextMonth(1)">
+          <v-icon color="white" size="30">mdi-chevron-right</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
     <table>
       <tr style="background-color: black !important">
         <th
@@ -29,7 +49,7 @@
           {{ day }}
         </th>
       </tr>
-      <tr v-for="week in weeks" :key="week[0]">
+      <tr v-for="week in weeks" :key="week[0] as number">
         <td
           v-for="day in week"
           :key="`${day}-${currentMonth}`"
@@ -52,12 +72,13 @@
 import { ref, computed } from 'vue'
 import { useList } from '@/composables'
 import { capitalizeFirstLetter, months, calendarViews } from '@/helpers'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import type { CalendarTypes } from '@/helpers'
 
 const listComposable = useList()
 const currentDate = ref(new Date())
 const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+const maxWeeks = ref(6)
 
 const currentMonth = computed(() =>
   capitalizeFirstLetter(currentDate.value.toLocaleString('pt-BR', { month: 'long' }))
@@ -70,36 +91,51 @@ const toggleCalendarType = () => {
   const nextCalendarTypeIndex =
     currentCalendarTypeIndex === calendarTypes.length - 1 ? 0 : currentCalendarTypeIndex + 1
   selectedCalendarType.value = calendarTypes[nextCalendarTypeIndex]
+
+  if (selectedCalendarType.value === 'month') {
+    maxWeeks.value = 6
+    return
+  }
+
+  if (selectedCalendarType.value === 'week') {
+    maxWeeks.value = 1
+    return
+  }
+
+  if (selectedCalendarType.value === '2weeks') {
+    maxWeeks.value = 2
+    return
+  }
 }
 
 const pastMonth = new Date().getMonth() === 0 ? 11 : new Date().getMonth() - 1
 const nextMonth = new Date().getMonth() + 1
 
 const currentYear = computed(() => currentDate.value.getFullYear())
+
 const weeks = computed(() => {
-  const firstDayOfMonth = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth(), 1)
-  const lastDayOfMonth = new Date(
-    currentDate.value.getFullYear(),
-    currentDate.value.getMonth() + 1,
-    0
-  )
+  const selectedDate = parseISO(listComposable.selectedDate)
+  const firstDayOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
+  const lastDayOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0)
   const daysInMonth = lastDayOfMonth.getDate()
 
   let weeks = []
   let week = []
   let dayCounter = 1
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < maxWeeks.value; i++) {
     for (let j = 0; j < 7; j++) {
       if ((i === 0 && j < firstDayOfMonth.getDay()) || dayCounter > daysInMonth) {
-        week.push('')
+        week.push(null)
       } else {
-        week.push(dayCounter)
-        dayCounter++
+        week.push(dayCounter++)
+      }
+
+      if (week.length === 7) {
+        weeks.push(week)
+        week = []
       }
     }
-    weeks.push(week)
-    week = []
   }
 
   return weeks

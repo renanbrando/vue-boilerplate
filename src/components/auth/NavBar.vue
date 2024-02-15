@@ -2,13 +2,16 @@
   <v-app-bar color="black" prominent>
     <v-app-bar-nav-icon v-if="!hasBackButton" variant="text" @click.stop="drawer = !drawer" />
 
-    <v-toolbar-title v-if="!hasBackButton" class="text-h6">Reservas</v-toolbar-title>
+    <v-toolbar-title v-if="!hasBackButton && $vuetify.display.lgAndUp" class="text-h6"
+      >Reservas</v-toolbar-title
+    >
     <v-toolbar-title v-if="hasBackButton" class="pointer" @click="goBack">
       <v-icon size="25">mdi-arrow-left</v-icon>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
-    <span v-if="!bookId?.length" class="text-h6"
+    <v-spacer v-if="$vuetify.display.mdAndDown"></v-spacer>
+    <span v-if="!bookId?.length" :class="$vuetify.display.lgAndUp ? 'text-h6' : 'text-caption'"
       >{{
         capitalizeFirstLetter(
           format(parseISO(listComposable.selectedDate), 'EEEE, d MMMM', { locale: ptBR })
@@ -22,7 +25,7 @@
         <span
           v-if="bookId?.length"
           v-bind="props"
-          class="text-h6 pointer"
+          class="pointer text-h6"
           @click="copy(bookId, 'ID Copiado')"
           >#{{ bookId }}</span
         >
@@ -109,6 +112,8 @@ const signOut = () => {
   localStorage.removeItem('token-concierge')
   localStorage.removeItem('user-concierge')
   route.replace('/login')
+  listComposable.selectedDate = format(new Date(), 'yyyy-MM-dd')
+  listComposable.setPropertiesIds([])
 }
 
 const call = () => {

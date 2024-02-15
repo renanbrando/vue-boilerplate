@@ -1,5 +1,5 @@
 <template>
-  <div class="fab-wrapper">
+  <div :class="$vuetify.display.lgAndUp ? 'fab-wrapper-desktop' : 'fab-wrapper-mobile'">
     <v-btn
       :icon="!model ? 'mdi-filter-variant' : 'mdi-close'"
       size="x-large"
@@ -29,17 +29,17 @@
     </v-bottom-sheet>
   </div>
   <v-bottom-navigation v-model="bottomNav" active color="primary" elevation="3">
-    <v-btn width="350px" @click="toggleList('bookings')">
+    <v-btn width="33%" @click="toggleList('bookings')">
       <v-icon>mdi-weather-night</v-icon>
       Reservas
     </v-btn>
 
-    <v-btn width="350px" @click="toggleList('guests')">
+    <v-btn width="33%" @click="toggleList('guests')">
       <v-icon>mdi-account-multiple</v-icon>
       Pessoas
     </v-btn>
 
-    <v-btn width="350px" @click="toggleList('vehicles')">
+    <v-btn width="33%" @click="toggleList('vehicles')">
       <v-icon>mdi-car</v-icon>
       <span>Veículos</span>
     </v-btn>
@@ -93,10 +93,17 @@ const toggleStatus = async (status: Status) => {
   border-top-right-radius: 20px !important;
 }
 
-.fab-wrapper {
+.fab-wrapper-desktop {
   position: fixed;
   bottom: 10rem;
   right: 3rem;
+  z-index: 9999;
+}
+
+.fab-wrapper-mobile {
+  position: fixed;
+  bottom: 4rem;
+  right: 1rem;
   z-index: 9999;
 }
 </style>
