@@ -4,10 +4,11 @@ import { defineStore } from 'pinia'
 import { format } from 'date-fns'
 import api from '@/api'
 
+const userConcierge = JSON.parse(localStorage.getItem('user-concierge') || 'null')
 const today = format(new Date(), 'yyyy-MM-dd')
-const prppertyIds = JSON.parse(localStorage.getItem('user-concierge') || '{}').properties.map(
-  (prop: Property) => prop.id
-)
+const prppertyIds = !userConcierge
+  ? []
+  : userConcierge.properties.map((prop: Property) => prop.id) || []
 
 export const useList = defineStore('list', {
   state: () => ({
