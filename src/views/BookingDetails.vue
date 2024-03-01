@@ -485,7 +485,7 @@
           :loading="isFinishing"
           @click="finishCheckin"
         >
-          Realizar Check-in
+          Registrar Check-in
         </v-btn>
       </div>
     </div>
@@ -566,7 +566,7 @@ const finishCheckin = () => {
       })
     })
     .catch(() => {
-      toastRef.value?.show('Erro ao realizar Check-in', {
+      toastRef.value?.show('Erro ao registrar Check-in', {
         timeout: 2000,
         color: 'error',
       })

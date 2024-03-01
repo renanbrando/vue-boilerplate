@@ -4,7 +4,7 @@
       <v-col cols="6">
         <small :style="`color: #${booking?.flagColor}`">{{ booking?.room?.property?.name }}</small>
         <br />
-        <small>#{{ booking?.id }}</small>
+        <small>Reserva {{ booking?.id }}</small>
       </v-col>
       <v-col cols="6" class="text-right" align="right">
         <small>
@@ -69,7 +69,7 @@
           :loading="isFinishing"
           :disabled="isFinishing || !booking?.custom9.length"
           @click="finishCheckin(Number(booking?.id))"
-          >Realizar Check-in</v-btn
+          >Registrar Check-in</v-btn
         >
       </v-col>
     </v-row>
@@ -114,7 +114,7 @@ const finishCheckin = (bookId: number) => {
       })
     })
     .catch(() => {
-      toastRef.value?.show('Erro ao realizar Check-in', {
+      toastRef.value?.show('Erro ao registrar Check-in', {
         timeout: 2000,
         color: 'error',
       })
