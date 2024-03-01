@@ -35,6 +35,7 @@
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
 
+    <v-btn v-if="!hasShareButton" variant="text" icon="mdi-sync" @click="reloadBookings" />
     <v-btn v-if="!hasShareButton" variant="text" icon="mdi-magnify" @click="openSearchDialog" />
     <v-tooltip v-else text="Compartilhar reserva">
       <template #activator="{ props }">
@@ -144,6 +145,11 @@ const copy = (text: string, message: string) => {
       color: 'green',
     })
   })
+}
+
+const reloadBookings = async () => {
+  listComposable.isLoading = true
+  await listComposable.getBookings()
 }
 </script>
 
