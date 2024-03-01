@@ -14,8 +14,8 @@
                 <span
                   class="text-h6 pointer"
                   v-bind="props"
-                  @click="copy(selectedBooking.room.displayName, 'Quarto copiado')"
-                  >Quarto: {{ selectedBooking.room.displayName }}</span
+                  @click="copy(selectedBooking.unitName, 'Apartamento copiado')"
+                  >Apartamento: {{ selectedBooking.unitName }}</span
                 >
               </template>
             </v-tooltip>
@@ -454,14 +454,19 @@
     <toast ref="toastRef" />
     <edit-guest-dialog ref="editGuest" />
     <div :class="$vuetify.display.lgAndUp ? 'fab-wrapper-desktop' : 'fab-wrapper-mobile'">
-      <v-btn
-        icon="mdi-cellphone-key"
-        size="x-large"
-        color="blue"
-        :disabled="isLoading || !selectedBooking.custom9.length"
-        :loading="isLoading"
-        @click="sendMessage"
-      />
+      <v-tooltip text="Enviar dados do apartamento">
+        <template #activator="{ props }">
+          <v-btn
+            v-bind="props"
+            icon="mdi-cellphone-key"
+            size="x-large"
+            color="blue"
+            :disabled="isLoading || !selectedBooking.custom9.length"
+            :loading="isLoading"
+            @click="sendMessage"
+          />
+        </template>
+      </v-tooltip>
     </div>
     <div
       :class="
@@ -480,7 +485,7 @@
           :loading="isFinishing"
           @click="finishCheckin"
         >
-          Finalizar Check-in
+          Realizar Check-in
         </v-btn>
       </div>
     </div>
@@ -561,7 +566,7 @@ const finishCheckin = () => {
       })
     })
     .catch(() => {
-      toastRef.value?.show('Erro ao finalizar Check-in', {
+      toastRef.value?.show('Erro ao realizar Check-in', {
         timeout: 2000,
         color: 'error',
       })

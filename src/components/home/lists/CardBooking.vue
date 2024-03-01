@@ -15,16 +15,17 @@
     </v-row>
     <v-row no-gutters class="mt-2">
       <v-col cols="12">
-        <span class="text-subtitle-1"
-          >{{ booking?.precheckin?.name || '' }} {{ booking?.firstName || '' }}
-          {{ booking?.lastName || '' }}</span
-        >
+        <span class="text-subtitle-1">{{
+          booking?.custom9.length
+            ? booking?.precheckin?.name
+            : `${booking?.firstName} ${booking?.lastName}`
+        }}</span>
       </v-col>
     </v-row>
     <v-row no-gutters class="mt-2">
       <v-col cols="12">
         <span class="font-weight-bold">Apartamento: </span>
-        <span>{{ booking?.room.displayName }}</span>
+        <span>{{ booking?.unitName }}</span>
       </v-col>
     </v-row>
     <v-row no-gutters class="mt-2">
@@ -68,7 +69,7 @@
           :loading="isFinishing"
           :disabled="isFinishing || !booking?.custom9.length"
           @click="finishCheckin(Number(booking?.id))"
-          >Finalizar Check-in</v-btn
+          >Realizar Check-in</v-btn
         >
       </v-col>
     </v-row>
@@ -113,7 +114,7 @@ const finishCheckin = (bookId: number) => {
       })
     })
     .catch(() => {
-      toastRef.value?.show('Erro ao finalizar Check-in', {
+      toastRef.value?.show('Erro ao realizar Check-in', {
         timeout: 2000,
         color: 'error',
       })

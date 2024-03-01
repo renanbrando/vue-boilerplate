@@ -20,7 +20,7 @@ import { useList } from '@/composables'
 const listComposable = useList()
 
 const shareContent = `Reserva: ${listComposable.selectedBooking?.id}
-Quarto: ${listComposable.selectedBooking?.room.displayName}
+Apartamento: ${listComposable.selectedBooking?.unitName || ''}
 Nome: ${listComposable.selectedBooking?.precheckin?.name || ''}
 Email: ${listComposable.selectedBooking?.precheckin?.email || ''}
 Entrada: ${listComposable.selectedBooking?.formattedArrival || ''}

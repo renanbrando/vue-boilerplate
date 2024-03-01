@@ -1,58 +1,65 @@
 <template>
   <v-container fluid class="container">
-    <v-row v-if="$vuetify.display.lgAndUp" no-gutters class="my-4">
-      <v-col cols="2">
-        <v-btn variant="text" color="white" class="mt-n1" @click="goToPreviousMonth(-1)">
+    <v-row no-gutters>
+      <v-col cols="12" align="right" class="mb-md-8 mb-4">
+        <v-btn-toggle v-model="statusGroup" rounded="xl" class="mr-12">
+          <v-btn
+            v-for="chip in chips"
+            :key="chip.id"
+            :value="chip.id"
+            class="text-unset"
+            :color="listComposable.status === chip.id ? 'primary' : 'white'"
+            height="45px"
+            @click="toggleStatus(chip.id as Status)"
+            >{{ chip.text }}</v-btn
+          >
+        </v-btn-toggle>
+        <v-tooltip :text="showCalendar ? 'Esconder Calendário' : 'Ver Calendário'" bottom>
+          <template #activator="{ props }">
+            <v-btn
+              variant="text"
+              color="white"
+              v-bind="props"
+              @click="showCalendar = !showCalendar"
+            >
+              <v-icon color="white" size="35">{{
+                showCalendar ? 'mdi-close' : 'mdi-calendar'
+              }}</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+      </v-col>
+      <v-col v-if="showCalendar" cols="2">
+        <v-btn variant="text" color="white" class="mt-n2" @click="goToPreviousMonth(-1)">
           <v-icon color="white" size="35">mdi-chevron-left</v-icon>
         </v-btn>
-        <span class="text-h6 mt-2">{{ currentMonth }} de {{ currentYear }}</span>
       </v-col>
-      <v-spacer></v-spacer>
-
-      <v-col cols="2" align="right">
-        <v-chip variant="outlined" class="pointer" @click="toggleCalendarType">
-          {{ calendarViews[selectedCalendarType].name }}
-        </v-chip>
-        <v-btn variant="text" color="white" class="mt-n1" @click="goToNextMonth(1)">
+      <v-col v-if="showCalendar" cols="8" align="center">
+        <span :class="$vuetify.display.lgAndUp ? 'text-h6' : 'text-body-1'"
+          >{{ currentMonth }} de {{ currentYear }}</span
+        >
+      </v-col>
+      <v-col v-if="showCalendar" cols="2" align="right">
+        <v-btn variant="text" color="white" class="mt-n2" @click="goToNextMonth(1)">
           <v-icon color="white" size="35">mdi-chevron-right</v-icon>
         </v-btn>
       </v-col>
     </v-row>
-    <v-row v-else no-gutters>
-      <v-col cols="12" align="right" class="mb-8">
-        <v-chip variant="outlined" class="pointer" @click="toggleCalendarType">
-          {{ calendarViews[selectedCalendarType].name }}
-        </v-chip>
-      </v-col>
-      <v-col cols="2">
-        <v-btn variant="text" color="white" class="mt-n2" @click="goToPreviousMonth(-1)">
-          <v-icon color="white" size="30">mdi-chevron-left</v-icon>
-        </v-btn>
-      </v-col>
-      <v-col cols="8" align="center">
-        <span class="text-body-1">{{ currentMonth }} de {{ currentYear }}</span>
-      </v-col>
-      <v-col cols="2" align="right">
-        <v-btn variant="text" color="white" class="mt-n2" @click="goToNextMonth(1)">
-          <v-icon color="white" size="30">mdi-chevron-right</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-    <table>
+    <table v-if="showCalendar">
       <tr style="background-color: black !important">
         <th
-          v-for="day in daysOfWeek"
-          :key="day"
+          v-for="(day, index) in daysOfWeek"
+          :key="index"
           class="white-text"
           style="background-color: black !important"
         >
           {{ day }}
         </th>
       </tr>
-      <tr v-for="week in weeks" :key="week[0] as number">
+      <tr v-for="(week, index) in weeks" :key="index">
         <td
-          v-for="day in week"
-          :key="`${day}-${currentMonth}`"
+          v-for="(day, i) in week"
+          :key="`${i}-${currentMonth}`"
           :style="
             Number(listComposable.selectedDate.split('-')[2]) === day &&
             Number(listComposable.selectedDate.split('-')[1]) - 1 === months[currentMonth]
@@ -71,42 +78,30 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { useList } from '@/composables'
-import { capitalizeFirstLetter, months, calendarViews } from '@/helpers'
-import { format, parseISO } from 'date-fns'
-import type { CalendarTypes } from '@/helpers'
+import { capitalizeFirstLetter, months } from '@/helpers'
+import { format, parseISO, subMonths } from 'date-fns'
+import type { Status } from '@/types/List'
 
 const listComposable = useList()
 const currentDate = ref(new Date())
 const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
 const maxWeeks = ref(6)
+const chips = ref([
+  {
+    text: 'Check-in',
+    id: 'checkin',
+  },
+  {
+    text: 'Check-out',
+    id: 'checkout',
+  },
+])
+const showCalendar = ref(true)
+const statusGroup = ref('checkin')
 
 const currentMonth = computed(() =>
   capitalizeFirstLetter(currentDate.value.toLocaleString('pt-BR', { month: 'long' }))
 )
-
-const selectedCalendarType = ref<CalendarTypes>('month')
-const toggleCalendarType = () => {
-  const calendarTypes = Object.keys(calendarViews) as CalendarTypes[]
-  const currentCalendarTypeIndex = calendarTypes.indexOf(selectedCalendarType.value)
-  const nextCalendarTypeIndex =
-    currentCalendarTypeIndex === calendarTypes.length - 1 ? 0 : currentCalendarTypeIndex + 1
-  selectedCalendarType.value = calendarTypes[nextCalendarTypeIndex]
-
-  if (selectedCalendarType.value === 'month') {
-    maxWeeks.value = 6
-    return
-  }
-
-  if (selectedCalendarType.value === 'week') {
-    maxWeeks.value = 1
-    return
-  }
-
-  if (selectedCalendarType.value === '2weeks') {
-    maxWeeks.value = 2
-    return
-  }
-}
 
 const pastMonth = new Date().getMonth() === 0 ? 11 : new Date().getMonth() - 1
 const nextMonth = new Date().getMonth() + 1
@@ -143,6 +138,7 @@ const weeks = computed(() => {
 
 const goToPreviousMonth = (num: number) => {
   const newMonth = currentDate.value.getMonth() + num
+  const newDate = subMonths(parseISO(listComposable.selectedDate), 1)
   if (currentDate.value.getMonth() === pastMonth) return
   if (newMonth < 0) {
     currentDate.value.setFullYear(currentDate.value.getFullYear() - 1)
@@ -151,6 +147,7 @@ const goToPreviousMonth = (num: number) => {
     currentDate.value.setMonth(newMonth)
   }
   currentDate.value = new Date(currentDate.value)
+  listComposable.selectedDate = format(newDate, 'yyyy-MM-dd')
 }
 
 const goToNextMonth = (num: number) => {
@@ -159,12 +156,19 @@ const goToNextMonth = (num: number) => {
   if (newDate === 1) currentDate.value.setDate(1)
   currentDate.value.setMonth(newDate)
   currentDate.value = new Date(currentDate.value)
+
+  const updatedDate = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth(), 1)
+  listComposable.selectedDate = format(updatedDate, 'yyyy-MM-dd')
 }
 
 const setDate = (date: number) => {
   listComposable.setSelectedDate(
     format(new Date(currentYear.value, months[currentMonth.value], date), 'yyyy-MM-dd')
   )
+}
+
+const toggleStatus = async (status: Status) => {
+  listComposable.setStatus(status)
 }
 </script>
 
@@ -214,5 +218,10 @@ td:hover {
   justify-content: center;
   align-content: center;
   flex: 1;
+}
+
+.text-unset {
+  text-transform: unset !important;
+  letter-spacing: 0px !important;
 }
 </style>

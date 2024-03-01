@@ -27,7 +27,7 @@
           v-bind="props"
           class="pointer text-h6"
           @click="copy(bookId, 'ID Copiado')"
-          >#{{ bookId }}</span
+          >Reserva {{ bookId }}</span
         >
       </template>
     </v-tooltip>
@@ -36,12 +36,16 @@
     <v-spacer></v-spacer>
 
     <v-btn v-if="!hasShareButton" variant="text" icon="mdi-magnify" @click="openSearchDialog" />
-    <v-btn
-      v-else
-      variant="text"
-      icon="mdi-share-variant"
-      @click="copy(shareContent as string, 'Booking copiado')"
-    />
+    <v-tooltip v-else text="Compartilhar reserva">
+      <template #activator="{ props }">
+        <v-btn
+          v-bind="props"
+          variant="text"
+          icon="mdi-share-variant"
+          @click="copy(shareContent as string, 'Booking copiado')"
+        />
+      </template>
+    </v-tooltip>
 
     <v-btn v-if="!hasDeleteButton" variant="text" icon="mdi-target" @click="openPropertiesDialog" />
   </v-app-bar>
