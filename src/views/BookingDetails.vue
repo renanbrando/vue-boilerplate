@@ -485,7 +485,7 @@
           :loading="isFinishing"
           @click="finishCheckin"
         >
-          Registrar Check-in
+          Registrar Entrada
         </v-btn>
       </div>
     </div>

@@ -69,7 +69,7 @@
           :loading="isFinishing"
           :disabled="isFinishing || !booking?.custom9.length"
           @click="finishCheckin(Number(booking?.id))"
-          >Registrar Check-in</v-btn
+          >Registrar Entrada</v-btn
         >
       </v-col>
     </v-row>
