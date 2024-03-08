@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto px-6 py-4 mb-3" rounded="lg" elevation="2" @click="goToBookingDetails">
+  <v-card class="mx-auto px-6 py-4 mb-3" rounded="lg" elevation="2">
     <v-row no-gutters>
       <v-col cols="6">
         <small :style="`color: #${booking?.flagColor}`">{{ booking?.room?.property?.name }}</small>
