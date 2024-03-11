@@ -92,3 +92,9 @@ const updateProperties = () => {
 }
 defineExpose({ openPropertiesDialog })
 </script>
+<style scoped lang="scss">
+.text-unset {
+  text-transform: unset !important;
+  letter-spacing: 0px !important;
+}
+</style>

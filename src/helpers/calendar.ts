@@ -1,4 +1,4 @@
-export type CalendarTypes = 'month' | 'week' | '2weeks'
+export type CalendarTypes = 'month' | 'week'
 
 export const months: { [key: string]: number } = {
   Janeiro: 0,
@@ -59,8 +59,5 @@ export const calendarViews = {
   },
   week: {
     name: 'Ver Semanal',
-  },
-  '2weeks': {
-    name: 'Ver Quinzenal',
   },
 }

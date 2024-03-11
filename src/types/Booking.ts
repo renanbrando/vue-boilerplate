@@ -19,6 +19,7 @@ export type Guests = Guest[]
 export type Booking = {
   id: string
   flagColor: string
+  unitName: string
   room: {
     displayName: string
     property: Property
