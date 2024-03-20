@@ -44,6 +44,7 @@ import GuestsList from '@/components/home/lists/GuestsList.vue'
 import VehiclesList from '@/components/home/lists/VehiclesList.vue'
 import { useList } from '@/composables'
 import { onBeforeMount } from 'vue'
+import type { Bookings } from '@/types/Booking'
 
 const listComposable = useList()
 
@@ -51,7 +52,7 @@ onBeforeMount(async () => {
   await listComposable.getBookings()
 })
 
-const hasVehicles = (bookings) => {
+const hasVehicles = (bookings: Bookings) => {
   return bookings.filter((b) => b.custom2.length > 0).length > 0
 }
 </script>
