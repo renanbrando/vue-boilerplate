@@ -53,11 +53,6 @@ onBeforeMount(async () => {
 })
 
 const hasVehicles = (bookings) => {
-  console.log('hasVehicles', bookings.filter((b) => b.custom2).length > 0)
-  console.log(
-    'vehicles',
-    bookings.filter((b) => b.custom2)
-  )
   return bookings.filter((b) => b.custom2.length > 0).length > 0
 }
 </script>
