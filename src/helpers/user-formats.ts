@@ -8,6 +8,8 @@ export const formatDoc = (text: string = '') => {
       return 'RG'
     case 'PASSPORT':
       return 'Passaporte'
+    case 'Passaporte':
+      return 'Passaporte'
     default:
       return 'Doc'
   }
