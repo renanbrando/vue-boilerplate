@@ -20,7 +20,6 @@
         !hasVehicles(listComposable.bookings)
       "
     >
-      {{ !!hasVehicles(listComposable.bookings) ? 'Tem' : 'Nao tem ' }}
       <v-alert type="info" elevation="1" class="ma-4"> 'Nenhum veículo encontrado.' </v-alert>
     </div>
     <div v-if="!listComposable.isLoading">
