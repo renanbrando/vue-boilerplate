@@ -4,8 +4,8 @@ export const formatVehicle = (vehicle: string) => {
   const [, color] = model.split('-color: ')
 
   return {
-    model: formattedModel.replace('carModel:', ''),
+    model: formattedModel?.replace('carModel:', '') || '',
     color,
-    plate: plate.replace('licensePlate:', ''),
+    plate: plate?.replace('licensePlate:', '') || '',
   }
 }

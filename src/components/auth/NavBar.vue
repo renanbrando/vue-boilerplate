@@ -35,7 +35,18 @@
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
 
-    <v-btn v-if="!hasShareButton" variant="text" icon="mdi-sync" @click="reloadBookings" />
+    <v-tooltip text="Atualizar a página">
+      <template #activator="{ props }">
+        <v-btn
+          v-if="!hasShareButton"
+          variant="text"
+          icon="mdi-sync"
+          v-bind="props"
+          @click="reloadBookings"
+        />
+      </template>
+    </v-tooltip>
+
     <v-btn v-if="!hasShareButton" variant="text" icon="mdi-magnify" @click="openSearchDialog" />
     <v-tooltip v-else text="Compartilhar reserva">
       <template #activator="{ props }">

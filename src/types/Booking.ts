@@ -26,12 +26,14 @@ export type Booking = {
   }
   precheckin: {
     name: string
+    docType: string
     doc: string
     guests: Guests
     phone: string
     email: string
     birthday: string
     visitors: Guests
+    checkinDone: string
   }
   custom9: string
   custom5: string

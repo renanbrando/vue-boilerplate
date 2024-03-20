@@ -12,6 +12,17 @@
         }}
       </v-alert>
     </div>
+    <div
+      v-if="
+        listComposable.bookings.length &&
+        !listComposable.isLoading &&
+        listComposable.list === 'vehicles' &&
+        !hasVehicles(listComposable.bookings)
+      "
+    >
+      {{ !!hasVehicles(listComposable.bookings) ? 'Tem' : 'Nao tem ' }}
+      <v-alert type="info" elevation="1" class="ma-4"> 'Nenhum veículo encontrado.' </v-alert>
+    </div>
     <div v-if="!listComposable.isLoading">
       <bookings-list
         v-if="listComposable.list === 'bookings'"
@@ -40,4 +51,13 @@ const listComposable = useList()
 onBeforeMount(async () => {
   await listComposable.getBookings()
 })
+
+const hasVehicles = (bookings) => {
+  console.log('hasVehicles', bookings.filter((b) => b.custom2).length > 0)
+  console.log(
+    'vehicles',
+    bookings.filter((b) => b.custom2)
+  )
+  return bookings.filter((b) => b.custom2.length > 0).length > 0
+}
 </script>

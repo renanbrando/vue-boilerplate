@@ -92,7 +92,7 @@ const chips = ref([
     id: 'checkin',
   },
   {
-    text: 'Check-out',
+    text: 'Checkout',
     id: 'checkout',
   },
 ])
