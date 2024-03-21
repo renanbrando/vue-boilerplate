@@ -14,8 +14,8 @@
                 <span
                   class="text-h6 pointer"
                   v-bind="props"
-                  @click="copy(selectedBooking.unitName, 'Apartamento copiado')"
-                  >Apartamento: {{ selectedBooking.unitName }}</span
+                  @click="copy(formatUnit(selectedBooking.unitName), 'Apartamento copiado')"
+                  >Apartamento: {{ formatUnit(selectedBooking.unitName) }}</span
                 >
               </template>
             </v-tooltip>
@@ -481,7 +481,11 @@
           color="green"
           rounded="xl"
           class="mb-3 text-unset"
-          :disabled="isFinishing || !selectedBooking.custom9.length"
+          :disabled="
+            isFinishing ||
+            !selectedBooking.custom9.length ||
+            !!selectedBooking?.precheckin?.checkinDone
+          "
           :loading="isFinishing"
           @click="finishCheckin"
         >
@@ -501,6 +505,7 @@ import { useList } from '@/composables'
 import { format } from 'date-fns'
 import { formatVehicle } from '@/helpers'
 import api from '@/api'
+import { formatUnit } from '@/helpers'
 
 window.scrollTo({ top: 0, behavior: 'smooth' })
 

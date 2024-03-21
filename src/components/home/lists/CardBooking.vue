@@ -9,7 +9,7 @@
       <v-col cols="6" class="text-right" align="right">
         <small>
           <v-icon :color="booking?.custom9.length ? 'green' : 'red'">mdi-circle</v-icon> Pré
-          Checkin</small
+          Check-in</small
         >
       </v-col>
     </v-row>
@@ -25,12 +25,13 @@
     <v-row no-gutters class="mt-2">
       <v-col cols="12">
         <span class="font-weight-bold">Apartamento: </span>
-        <span>{{ booking?.unitName }}</span>
+        <span>{{ formatUnit(booking?.unitName) }}</span>
       </v-col>
     </v-row>
     <v-row no-gutters class="mt-2">
       <v-col cols="12">
-        <span class="font-weight-bold">Doc:</span> <span>{{ booking?.precheckin?.doc || '' }}</span>
+        <span class="font-weight-bold">{{ formatDoc(booking?.precheckin?.docType) }}: </span>
+        <span>{{ booking?.precheckin?.doc || '' }}</span>
       </v-col>
     </v-row>
     <v-row no-gutters class="mt-2">
@@ -38,7 +39,7 @@
         <span class="font-weight-bold">Check-in: </span
         ><span>{{ booking?.formattedArrival || '' }} {{ booking?.formatedArrivalTime || '' }}</span>
         <br />
-        <span class="font-weight-bold">Check-out: </span>
+        <span class="font-weight-bold">Checkout: </span>
         <span
           >{{ booking?.formattedDeparture || '' }} {{ booking?.formatedDepartureTime || '' }}</span
         >
@@ -67,7 +68,7 @@
           rounded="xl"
           elevation="0"
           :loading="isFinishing"
-          :disabled="isFinishing || !booking?.custom9.length"
+          :disabled="isFinishing || !booking?.custom9.length || !!booking?.precheckin?.checkinDone"
           @click="finishCheckin(Number(booking?.id))"
           >Registrar Entrada</v-btn
         >
@@ -84,6 +85,7 @@ import { useRouter } from 'vue-router'
 import type { Booking } from '@/types/Booking'
 import { useList } from '@/composables/useList'
 import Toast from '@/components/Toast.vue'
+import { formatUnit, formatDoc } from '@/helpers'
 
 const route = useRouter()
 const props = defineProps<{

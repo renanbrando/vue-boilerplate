@@ -16,11 +16,12 @@
 <script lang="ts" setup>
 import NavBar from '@/components/auth/NavBar.vue'
 import { useList } from '@/composables'
+import { formatUnit } from '@/helpers'
 
 const listComposable = useList()
 
 const shareContent = `Reserva: ${listComposable.selectedBooking?.id}
-Apartamento: ${listComposable.selectedBooking?.unitName || ''}
+Apartamento: ${formatUnit(listComposable.selectedBooking?.unitName) || ''}
 Nome: ${listComposable.selectedBooking?.precheckin?.name || ''}
 Email: ${listComposable.selectedBooking?.precheckin?.email || ''}
 Entrada: ${listComposable.selectedBooking?.formattedArrival || ''}
