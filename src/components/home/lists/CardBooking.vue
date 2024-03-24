@@ -70,7 +70,9 @@
           :loading="isFinishing"
           :disabled="isFinishing || !booking?.custom9.length || !!booking?.precheckin?.checkinDone"
           @click="finishCheckin(Number(booking?.id))"
-          >Registrar Entrada</v-btn
+          >{{
+            `${!!booking?.precheckin?.checkinDone ? 'Entrada Registrada' : ' Registrar Entrada'}`
+          }}</v-btn
         >
       </v-col>
     </v-row>
@@ -110,6 +112,8 @@ const finishCheckin = (bookId: number) => {
   api
     .post(`/check-in-api/precheckin/finish/${bookId}`)
     .then(() => {
+      // eslint-disable-next-line vue/no-mutating-props
+      if (props.booking) props.booking.precheckin.checkinDone = new Date().toISOString()
       toastRef.value?.show('Check-in finalizado com sucesso', {
         timeout: 2000,
         color: 'green',

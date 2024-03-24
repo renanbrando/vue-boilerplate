@@ -447,7 +447,7 @@
           </v-col>
         </v-row>
         <v-row v-else no-gutters class="mt-4">
-          <v-col cols="12" align="center"> Nenhum veículo cadastrado. </v-col>
+          <v-col cols="12" align="center"> Não há veículos cadastrados. </v-col>
         </v-row>
       </v-window-item>
     </v-window>
@@ -489,7 +489,9 @@
           :loading="isFinishing"
           @click="finishCheckin"
         >
-          Registrar Entrada
+          {{
+            `${!!selectedBooking?.precheckin?.checkinDone ? 'Entrada Registrada' : 'Registrar Entrada'}`
+          }}
         </v-btn>
       </div>
     </div>
