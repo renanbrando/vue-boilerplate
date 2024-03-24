@@ -8,19 +8,19 @@
             ? 'Nenhuma reserva encontrada.'
             : listComposable.list === 'guests'
               ? 'Nenhuma pessoa encontrada.'
-              : 'Nenhum veículo encontrado.'
+              : 'Não há veículos cadastrados.'
         }}
       </v-alert>
     </div>
     <div
-      v-if="
+      v-else-if="
         listComposable.bookings.length &&
         !listComposable.isLoading &&
         listComposable.list === 'vehicles' &&
         !hasVehicles(listComposable.bookings)
       "
     >
-      <v-alert type="info" elevation="1" class="ma-4"> 'Nenhum veículo encontrado.' </v-alert>
+      <v-alert type="info" elevation="1" class="ma-4"> Não há veículos cadastrados. </v-alert>
     </div>
     <div v-if="!listComposable.isLoading">
       <bookings-list
