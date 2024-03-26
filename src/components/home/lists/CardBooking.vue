@@ -63,7 +63,7 @@
           >Mais Informações</v-btn
         >
         <v-btn
-          color="primary"
+          :color="!!booking?.precheckin?.checkinDone ? 'grey' : 'primary'"
           class="mx-1 text-unset my-1"
           rounded="xl"
           elevation="0"
