@@ -489,7 +489,9 @@
           :loading="isFinishing"
           @click="finishCheckin"
         >
-          Registrar Entrada
+          {{
+            `${!!selectedBooking?.precheckin?.checkinDone ? 'Entrada Registrada' : 'Registrar Entrada'}`
+          }}
         </v-btn>
       </div>
     </div>
