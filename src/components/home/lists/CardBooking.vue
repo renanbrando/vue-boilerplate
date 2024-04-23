@@ -8,8 +8,7 @@
       </v-col>
       <v-col cols="6" class="text-right" align="right">
         <small>
-          <v-icon :color="booking?.custom9.length ? 'green' : 'red'">mdi-circle</v-icon> Pré
-          Check-in</small
+          <v-icon :color="booking?.custom9.length ? 'green' : 'red'">mdi-circle</v-icon> Check-in Digital</small
         >
       </v-col>
     </v-row>
