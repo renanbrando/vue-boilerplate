@@ -92,6 +92,10 @@ const chips = ref([
     id: 'checkin',
   },
   {
+    text: 'Em estadia',
+    id: 'stay',
+  },
+  {
     text: 'Checkout',
     id: 'checkout',
   },
