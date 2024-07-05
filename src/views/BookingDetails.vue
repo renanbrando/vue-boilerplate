@@ -120,7 +120,10 @@
               <template #append-inner>
                 <v-tooltip text="Copiar">
                   <template #activator="{ props }">
-                    <v-icon class="pointer" v-bind="props" @click="copy(phone, 'Documento copiado')"
+                    <v-icon
+                      class="pointer"
+                      v-bind="props"
+                      @click="copy(document, 'Documento copiado')"
                       >mdi-clipboard-multiple-outline</v-icon
                     >
                   </template>
