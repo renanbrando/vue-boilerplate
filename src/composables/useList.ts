@@ -43,7 +43,12 @@ export const useList = defineStore('list', {
     },
 
     async getBookings() {
-      const dateParam = this.status === 'checkin' ? `arrivalDate` : 'departureDate'
+      const params = {
+        checkin: 'arrivalDate',
+        checkout: 'departureDate',
+        stay: 'date',
+      }
+      const dateParam = params[this.status]
       await api
         .get(
           `/bookings/precheckins?properties=${this.propertiesIds}&${dateParam}=${this.selectedDate}`
