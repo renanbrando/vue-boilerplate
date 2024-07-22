@@ -456,7 +456,7 @@
     </v-window>
     <toast ref="toastRef" />
     <edit-guest-dialog ref="editGuest" />
-    <div :class="$vuetify.display.lgAndUp ? 'fab-wrapper-desktop' : 'fab-wrapper-mobile'">
+    <!-- <div :class="$vuetify.display.lgAndUp ? 'fab-wrapper-desktop' : 'fab-wrapper-mobile'">
       <v-tooltip text="Enviar dados do apartamento">
         <template #activator="{ props }">
           <v-btn
@@ -470,7 +470,7 @@
           />
         </template>
       </v-tooltip>
-    </div>
+    </div> -->
     <div
       :class="
         $vuetify.display.lgAndUp ? 'button-bottom-wrapper-desktop' : 'button-bottom-wrapper-mobile'
@@ -518,7 +518,6 @@ const { selectedBooking, tab: stateTab } = useList()
 const editGuest = ref()
 const tab = ref(stateTab)
 const toastRef = ref()
-const isLoading = ref(false)
 const isFinishing = ref(false)
 
 const name = ref(selectedBooking.precheckin?.name || '')
@@ -544,26 +543,26 @@ const copy = (text: string, message: string) => {
 
 const visitors = ref(selectedBooking.precheckin?.visitors || [])
 
-const sendMessage = async () => {
-  isLoading.value = true
-  api
-    .post(`/check-in-api/precheckin/confirmation/${selectedBooking.id}`)
-    .then(() => {
-      toastRef.value?.show('Mensagem enviada com sucesso', {
-        timeout: 2000,
-        color: 'green',
-      })
-    })
-    .catch(() => {
-      toastRef.value?.show('Erro ao enviar mensagem', {
-        timeout: 2000,
-        color: 'error',
-      })
-    })
-    .finally(() => {
-      isLoading.value = false
-    })
-}
+// const sendMessage = async () => {
+//   isLoading.value = true
+//   api
+//     .post(`/check-in-api/precheckin/confirmation/${selectedBooking.id}`)
+//     .then(() => {
+//       toastRef.value?.show('Mensagem enviada com sucesso', {
+//         timeout: 2000,
+//         color: 'green',
+//       })
+//     })
+//     .catch(() => {
+//       toastRef.value?.show('Erro ao enviar mensagem', {
+//         timeout: 2000,
+//         color: 'error',
+//       })
+//     })
+//     .finally(() => {
+//       isLoading.value = false
+//     })
+// }
 
 const finishCheckin = () => {
   isFinishing.value = true
