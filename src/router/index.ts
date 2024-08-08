@@ -7,18 +7,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-  const token = localStorage.getItem('token-concierge')
-
-  if (requiresAuth) {
-    if (token?.length) {
-      next()
-    } else {
-      next('/login')
-    }
-  } else {
-    next()
-  }
+  next()
 })
 
 export default router

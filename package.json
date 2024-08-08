@@ -1,5 +1,5 @@
 {
-  "name": "concierge-client",
+  "name": "seara-poc-front",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,7 +16,6 @@
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
     "vue": "^3.4.15",
-    "vue-calendar": "^0.1.5",
     "vue-router": "^4.0.0",
     "vuetify": "^3.5.2"
   },

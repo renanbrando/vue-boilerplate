@@ -1,58 +1,40 @@
 <template>
-  <v-container fluid style="margin: 0; padding: 0; padding-bottom: 100px">
-    <calendar />
-    <div v-if="!listComposable.bookings.length && !listComposable.isLoading">
-      <v-alert type="info" elevation="1" class="ma-4">
-        {{
-          listComposable.list === 'bookings'
-            ? 'Nenhuma reserva encontrada.'
-            : listComposable.list === 'guests'
-              ? 'Nenhuma pessoa encontrada.'
-              : 'Não há veículos cadastrados.'
-        }}
-      </v-alert>
-    </div>
-    <div
-      v-else-if="
-        listComposable.bookings.length &&
-        !listComposable.isLoading &&
-        listComposable.list === 'vehicles' &&
-        !hasVehicles(listComposable.bookings)
-      "
-    >
-      <v-alert type="info" elevation="1" class="ma-4"> Não há veículos cadastrados. </v-alert>
-    </div>
-    <div v-if="!listComposable.isLoading">
-      <bookings-list
-        v-if="listComposable.list === 'bookings'"
-        :bookings="listComposable.bookings"
-      />
-      <guests-list v-if="listComposable.list === 'guests'" :bookings="listComposable.bookings" />
-      <vehicles-list
-        v-if="listComposable.list === 'vehicles'"
-        :bookings="listComposable.bookings"
-      />
-    </div>
-    <v-skeleton-loader v-for="n in 12" v-else :key="n" :elevation="1" type="card" class="ma-4" />
+  <v-container fluid style="height: 100vh">
+    <v-data-table :headers="headers" :items="items">
+      <template #item="{ item }">
+        <tr>
+          <td>{{ item.id }}</td>
+          <td><v-btn :to="`/${item.id}`">View</v-btn></td>
+        </tr>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import Calendar from '@/components/home/Calendar.vue'
-import BookingsList from '@/components/home/lists/BookingsList.vue'
-import GuestsList from '@/components/home/lists/GuestsList.vue'
-import VehiclesList from '@/components/home/lists/VehiclesList.vue'
-import { useList } from '@/composables'
-import { onBeforeMount } from 'vue'
-import type { Bookings } from '@/types/Booking'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
-const listComposable = useList()
+const headers = ref([
+  {
+    title: 'ID',
+    align: 'start',
+    sortable: false,
+    key: 'id',
+  },
+  {
+    title: 'Detalhes',
+    align: 'start',
+    sortable: false,
+    key: 'details',
+  },
+])
+const items = ref([])
 
-onBeforeMount(async () => {
-  await listComposable.getBookings()
+onMounted(() => {
+  axios.get('https://api.chucknorris.io/jokes/random').then((res) => {
+    console.log(res.data)
+    items.value = [res.data]
+  })
 })
-
-const hasVehicles = (bookings: Bookings) => {
-  return bookings.filter((b) => b.custom2.length > 0).length > 0
-}
 </script>

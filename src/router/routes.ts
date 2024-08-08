@@ -2,37 +2,26 @@ import { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
   {
-    path: '/login',
-    component: () => import('@/templates/UnauthTemplate.vue'),
+    path: '/',
+    component: () => import('@/templates/DefaultTemplate.vue'),
+    meta: { requiresAuth: false },
     children: [
       {
         path: '',
-        name: 'Login',
-        component: () => import('@/views/Login.vue'),
-      },
-    ],
-  },
-  {
-    path: '/home',
-    component: () => import('@/templates/AuthTemplate.vue'),
-    meta: { requiresAuth: true },
-    children: [
-      {
-        path: '',
-        name: 'Home',
+        name: 'home',
         component: () => import('@/views/Home.vue'),
       },
     ],
   },
   {
-    path: '/booking',
-    component: () => import('@/templates/BookingTemplate.vue'),
-    meta: { requiresAuth: true },
+    path: '/:id',
+    component: () => import('@/templates/DefaultTemplate.vue'),
+    meta: { requiresAuth: false },
     children: [
       {
         path: '',
-        name: 'Booking',
-        component: () => import('@/views/BookingDetails.vue'),
+        name: 'details',
+        component: () => import('@/views/Details.vue'),
       },
     ],
   },
